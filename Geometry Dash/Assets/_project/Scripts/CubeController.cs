@@ -20,7 +20,6 @@ public class CubeController : MonoBehaviour
     
     private bool _isGround = false;
     private bool _isMovement = true;
-    private bool _isJumping = false;
 
     private float targetAngle = 0f;
 
@@ -37,9 +36,11 @@ public class CubeController : MonoBehaviour
             _cubeRB.velocity = new Vector2(cubeSpeed, _cubeRB.velocity.y);
             if (_isGround)
             {
-                if (Input.GetButton("Jump") && !_isJumping)
+                if (Input.GetKey(KeyCode.Space)/* && !_isJumping*/)
                 {
+                    _isGround = false;
                     _cubeRB.velocity = new Vector2(_cubeRB.velocity.x, jumpPower);
+
                     if (_cubeRB.gravityScale > 0)
                     {
                         targetAngle -= 90f;
@@ -61,7 +62,6 @@ public class CubeController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _isGround = true;
-        _isJumping = false;
 
         if (collision.contacts[0].normal.x < -0.05)
         {
@@ -79,7 +79,6 @@ public class CubeController : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         _isGround = false;
-        _isJumping = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -87,7 +86,6 @@ public class CubeController : MonoBehaviour
         if (other.CompareTag("Double Jump"))
         {
             _isGround = true;
-            _isJumping = false;
         }
 
         if (other.CompareTag("BlackHole"))
@@ -119,7 +117,6 @@ public class CubeController : MonoBehaviour
         if (other.CompareTag("Double Jump"))
         {
             _isGround = false;
-            _isJumping = true;
         }
     }
 
